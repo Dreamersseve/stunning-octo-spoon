@@ -1,0 +1,58 @@
+# Project: chatroom
+# Makefile created by Red Panda C++ 3.1.2871
+
+CXX      = "g++.exe"
+CC       = "gcc.exe"
+WINDRES  = "windres.exe"
+RM       = del /q /f
+CD       = cd /d
+LIBS     = "-LD:/curl-8.11.0" "-LD:/curl-8.11.0" "-pg" "-Wl,--stack,12582912" "C:/Windows/System32/ws2_32.dll" "-static"
+INCS     = 
+CXXINCS  = 
+CXXFLAGS = $(CXXINCS) "-g3" "-O2" "-std=c++14" "-pipe" "-Wall" "-Wextra" "-D_DEBUG"
+CFLAGS   = $(INCS) "-g3" "-O2" "-pipe" "-Wall" "-Wextra" "-D_DEBUG"
+WINDRESFLAGS = 
+RES      = chess_online_private.res
+OBJ      = guide.o IO.o chat.o keyword.o main.o chient.o GUI.o data.o $(RES)
+BIN      = chess_online.exe
+LINKOBJ  = "guide.o" "IO.o" "chat.o" "keyword.o" "main.o" "chient.o" "GUI.o" "data.o" "chess_online_private.res"
+CLEANOBJ = "guide.o" "IO.o" "chat.o" "keyword.o" "main.o" "chient.o" "GUI.o" "data.o" "chess_online_private.res" "chess_online.exe"
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	-$(RM) $(CLEANOBJ) >NUL 2>&1
+
+chess_online.exe: $(OBJ)
+
+	$(CXX) $(LINKOBJ) -o "chess_online.exe" $(LIBS)
+
+guide.o: guide.cpp IO.h GUI.h chient.h data.h
+	$(CXX) -c "guide.cpp" -o "guide.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+IO.o: IO.cpp GUI.h
+	$(CXX) -c "IO.cpp" -o "IO.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+chat.o: chat.cpp GUI.h guide.h chient.h data.h
+	$(CXX) -c "chat.cpp" -o "chat.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+keyword.o: keyword.cpp
+	$(CXX) -c "keyword.cpp" -o "keyword.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+main.o: main.cpp guide.h chient.h data.h
+	$(CXX) -c "main.cpp" -o "main.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+chient.o: chient.cpp chat.h IO.h guide.h
+	$(CXX) -c "chient.cpp" -o "chient.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+GUI.o: GUI.cpp GUI.h
+	$(CXX) -c "GUI.cpp" -o "GUI.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+data.o: data.cpp IO.h GUI.h chient.h
+	$(CXX) -c "data.cpp" -o "data.o" $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+chess_online_private.res: chess_online_private.rc 
+	$(WINDRES) -i "chess_online_private.rc" --input-format=rc -o "chess_online_private.res" -O coff $(WINDRESFLAGS) 
+
